@@ -36,6 +36,9 @@ const lv_obj_class_t lv_btn_class  = {
     .base_class = &lv_obj_class
 };
 
+uint32_t LV_BTN_ID;
+
+
 /**********************
  *      MACROS
  **********************/

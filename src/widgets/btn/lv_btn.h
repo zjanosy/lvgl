@@ -31,6 +31,7 @@ typedef struct {
 } lv_btn_t;
 
 extern const lv_obj_class_t lv_btn_class;
+extern uint32_t LV_BTN_ID;
 
 /**********************
  * GLOBAL PROTOTYPES
@@ -42,6 +43,8 @@ extern const lv_obj_class_t lv_btn_class;
  * @return          pointer to the created button
  */
 lv_obj_t * lv_btn_create(lv_obj_t * parent);
+
+
 
 /**********************
  *      MACROS
