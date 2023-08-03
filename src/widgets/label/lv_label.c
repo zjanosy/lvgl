@@ -640,6 +640,8 @@ static void lv_label_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
 
     lv_label_t * label = (lv_label_t *)obj;
 
+    obj->comp_id = LV_LABEL_ID;
+
     label->text       = NULL;
     label->static_txt = 0;
     label->recolor    = 0;

@@ -296,10 +296,10 @@ static void lv_obj_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
         obj->coords.y2 = obj->coords.y1 - 1;
         obj->coords.x1  = parent->coords.x1 + lv_obj_get_style_pad_left(parent, LV_PART_MAIN) - sl;
         obj->coords.x2  = obj->coords.x1 - 1;
-        obj->comp_id = LV_SCREEN_ID;
+        obj->comp_id = LV_OBJ_ID;
     }
     else {
-        obj->comp_id = LV_OBJ_ID;
+        obj->comp_id = LV_SCREEN_ID;
     }
 
     /*Set attributes*/

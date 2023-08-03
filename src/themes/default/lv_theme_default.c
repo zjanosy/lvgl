@@ -663,6 +663,7 @@ static void style_init(void)
     lv_theme_add_style(&theme, LV_BTN_ID, &styles->disabled, LV_STATE_DISABLED);
 
 
+    lv_theme_add_component(&theme, LV_LABEL_ID);
 
 
 
