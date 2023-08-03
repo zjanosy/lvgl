@@ -105,7 +105,6 @@ lv_theme_components_t * lv_theme_add_component(lv_theme_t * theme, uint32_t comp
 void lv_theme_add_style(lv_theme_t * theme, uint32_t component_id, const lv_style_t * style,
                         lv_style_selector_t selector)
 {
-
     lv_theme_components_t * comp = &theme->components[component_id];
 
     /*Allocate space for the new style and shift the rest of the style to the end*/
@@ -122,18 +121,23 @@ void lv_theme_add_style(lv_theme_t * theme, uint32_t component_id, const lv_styl
     comp->styles[0].style = style;
     comp->styles[0].selector = selector;
 
-
-
     if(style->prop_cnt == 1) {
         uint32_t idx = style->prop1 / 32;
         comp->props[idx] |= 1 << (style->prop1 & 0x1F);
+        if(selector == 0) {
+            comp->main_values[style->prop1] = style->v_p.value1;
+        }
     }
     else {
         uint8_t * tmp = style->v_p.values_and_props + style->prop_cnt * sizeof(lv_style_value_t);
         uint16_t * props = (uint16_t *)tmp;
+        lv_style_value_t * values = (lv_style_value_t *) style->v_p.values_and_props;
         for(i = 0; i < style->prop_cnt; i++) {
             uint32_t idx = props[i] / 32;
             comp->props[idx] |= 1 << (props[i] & 0x1F);
+            if(selector == 0) {
+                comp->main_values[props[i]] = values[i];
+            }
         }
     }
 
@@ -149,18 +153,17 @@ static lv_style_res_t generic_get_prop_cb(lv_theme_components_t * comp, lv_obj_t
                                           lv_part_t part, lv_style_value_t * v, int32_t * weight)
 {
 
-    //    static uint32_t total = 0;
-    //    static uint32_t skip = 0;
-
-    //    total++;
-
-    uint32_t idx = prop / 32;
-    if((comp->props[idx] & (1 << (prop & 0x1F))) == 0) {
-        //        skip++;
-
-        //        if((skip % 1000) == 0) printf("%d %%\n", skip * 100 / total);
-        return LV_STYLE_RES_NOT_FOUND;
-    }
+    //    //    static uint32_t total = 0;
+    //    //    static uint32_t skip = 0;
+    //
+    //    //    total++;
+    //
+    //    uint32_t idx = prop / 32;
+    //    if((comp->props[idx] & (1 << (prop & 0x1F))) == 0) {
+    //        //        skip++;
+    //
+    //        //        if((skip % 1000) == 0) printf("%d %%\n", skip * 100 / total);
+    //        return LV_STYLE_RES_NOT_FOUND;
 
     lv_style_res_t res = LV_STYLE_RES_NOT_FOUND;
     uint8_t group = 1 << _lv_style_get_prop_group(prop);

@@ -79,13 +79,23 @@ lv_style_res_t lv_component_get_style_property(lv_theme_t * theme, lv_obj_t * ob
     uint32_t comp_id = obj->comp_id;
 
     while(comp_id) {
-        lv_style_res_t res = theme->components[comp_id].get_prop_cb(&theme->components[comp_id], obj, prop, selector, v,
-                                                                    weight);
-        if(res == LV_RES_OK) return res;
+        if(obj->state == 0 && selector == 0) {
+            uint32_t idx = prop >> 5;
+            if((theme->components[comp_id].props[idx] & (1 << (prop & 0x1F)))) {
+                *v = theme->components[comp_id].main_values[prop];
+                *weight = 0;
+                return LV_STYLE_RES_FOUND;
+            }
+        }
+        else {
+            lv_style_res_t res = theme->components[comp_id].get_prop_cb(&theme->components[comp_id], obj, prop, selector, v,
+                                                                        weight);
+            if(res == LV_RES_OK) return res;
+        }
         comp_id = id_list[comp_id].parent_id;
     }
 
-    return LV_RES_INV;
+    return LV_STYLE_RES_NOT_FOUND;
 }
 
 

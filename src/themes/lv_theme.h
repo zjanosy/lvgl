@@ -37,6 +37,8 @@ typedef struct _lv_theme_components_t {
     /**Set a bit for each property to quickly see if that property stored in styles or not */
     uint32_t props[256 / 32];       /*Bit field for 256 bits -> 256 style properties*/
 
+    lv_style_value_t main_values[256];
+
     /** Store the styles of the component*/
     _lv_style_with_selector_t * styles;
     uint32_t style_cnt;
