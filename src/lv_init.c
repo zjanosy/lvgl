@@ -95,6 +95,8 @@ void lv_init(void)
     lv_draw_sw_init();
 #endif
 
+    lv_component_init();
+
     _lv_obj_style_init();
     _lv_ll_init(&LV_GC_ROOT(_lv_disp_ll), sizeof(lv_disp_t));
     _lv_ll_init(&LV_GC_ROOT(_lv_indev_ll), sizeof(lv_indev_t));

@@ -108,9 +108,10 @@ lv_disp_t * lv_disp_create(lv_coord_t hor_res, lv_coord_t ver_res)
     disp->act_scr   = lv_obj_create(NULL); /*Create a default screen on the display*/
     disp->top_layer = lv_obj_create(NULL); /*Create top layer on the display*/
     disp->sys_layer = lv_obj_create(NULL); /*Create sys layer on the display*/
-    lv_obj_remove_style_all(disp->bottom_layer);
-    lv_obj_remove_style_all(disp->top_layer);
-    lv_obj_remove_style_all(disp->sys_layer);
+    disp->bottom_layer->comp_id = LV_SCREEN_LAYER_ID;
+    disp->top_layer->comp_id = LV_SCREEN_LAYER_ID;
+    disp->sys_layer->comp_id = LV_SCREEN_LAYER_ID;
+    disp->act_scr->comp_id = LV_SCREEN_ID;
     lv_obj_clear_flag(disp->top_layer, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_clear_flag(disp->sys_layer, LV_OBJ_FLAG_CLICKABLE);
 
@@ -722,13 +723,6 @@ void lv_disp_set_theme(lv_disp_t * disp, lv_theme_t * th)
     }
 
     disp->theme = th;
-
-    if(disp->screen_cnt == 4 &&
-       lv_obj_get_child_cnt(disp->screens[0]) == 0 &&
-       lv_obj_get_child_cnt(disp->screens[1]) == 0 &&
-       lv_obj_get_child_cnt(disp->screens[2]) == 0) {
-        lv_theme_apply(disp->screens[0]);
-    }
 }
 
 lv_theme_t * lv_disp_get_theme(lv_disp_t * disp)

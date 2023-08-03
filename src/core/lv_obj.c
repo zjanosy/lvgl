@@ -61,6 +61,10 @@ const lv_obj_class_t lv_obj_class = {
     .base_class = NULL,
 };
 
+uint32_t LV_SCREEN_ID;
+uint32_t LV_SCREEN_LAYER_ID;
+uint32_t LV_OBJ_ID;
+
 /**********************
  *      MACROS
  **********************/
@@ -292,6 +296,10 @@ static void lv_obj_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
         obj->coords.y2 = obj->coords.y1 - 1;
         obj->coords.x1  = parent->coords.x1 + lv_obj_get_style_pad_left(parent, LV_PART_MAIN) - sl;
         obj->coords.x2  = obj->coords.x1 - 1;
+        obj->comp_id = LV_SCREEN_ID;
+    }
+    else {
+        obj->comp_id = LV_OBJ_ID;
     }
 
     /*Set attributes*/
@@ -678,7 +686,7 @@ static void lv_obj_set_state(lv_obj_t * obj, lv_state_t new_state)
     uint32_t tsi = 0;
     uint32_t i;
     for(i = 0; i < obj->style_cnt && tsi < STYLE_TRANSITION_MAX; i++) {
-        _lv_obj_style_t * obj_style = &obj->styles[i];
+        _lv_style_with_selector_t * obj_style = &obj->styles[i];
         lv_state_t state_act = lv_obj_style_get_selector_state(obj->styles[i].selector);
         lv_part_t part_act = lv_obj_style_get_selector_part(obj->styles[i].selector);
         if(state_act & (~new_state)) continue; /*Skip unrelated styles*/

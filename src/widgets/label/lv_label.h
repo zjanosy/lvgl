@@ -90,6 +90,7 @@ typedef struct {
 } lv_label_t;
 
 extern const lv_obj_class_t lv_label_class;
+extern uint32_t LV_LABEL_ID;
 
 /**********************
  * GLOBAL PROTOTYPES

@@ -148,6 +148,9 @@ typedef uint32_t lv_obj_flag_t;
  * Make the base object's class publicly available.
  */
 extern const lv_obj_class_t lv_obj_class;
+extern uint32_t LV_SCREEN_ID;
+extern uint32_t LV_SCREEN_LAYER_ID;
+extern uint32_t LV_OBJ_ID;
 
 /**
  * Special, rarely used attributes.
@@ -175,7 +178,7 @@ typedef struct _lv_obj_t {
     const lv_obj_class_t * class_p;
     struct _lv_obj_t * parent;
     _lv_obj_spec_attr_t * spec_attr;
-    _lv_obj_style_t * styles;
+    _lv_style_with_selector_t * styles;
     void * user_data;
     lv_area_t coords;
     lv_obj_flag_t flags;
@@ -186,6 +189,7 @@ typedef struct _lv_obj_t {
     uint16_t style_cnt  : 6;
     uint16_t h_layout   : 1;
     uint16_t w_layout   : 1;
+    uint16_t comp_id;
 } lv_obj_t;
 
 /**********************

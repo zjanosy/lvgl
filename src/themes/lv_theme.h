@@ -25,12 +25,29 @@ extern "C" {
 
 struct _lv_theme_t;
 struct _lv_disp_t;
+struct _lv_theme_components_t;
 
-typedef void (*lv_theme_apply_cb_t)(struct _lv_theme_t *, lv_obj_t *);
+typedef lv_style_res_t (*lv_theme_component_get_prop_cb)(struct _lv_theme_components_t * comp, lv_obj_t * obj,
+                                                         lv_style_prop_t prop, lv_part_t part, lv_style_value_t * v, int32_t * weight);
+
+typedef struct _lv_theme_components_t {
+    /** Will be called to get a property*/
+    lv_theme_component_get_prop_cb get_prop_cb;
+
+    /**Set a bit for each property to quickly see if that property stored in styles or not */
+    uint32_t props[256 / 32];       /*Bit field for 256 bits -> 256 style properties*/
+
+    /** Store the styles of the component*/
+    _lv_style_with_selector_t * styles;
+    uint32_t style_cnt;
+
+    void * user_data;
+} lv_theme_components_t;
+
 
 typedef struct _lv_theme_t {
-    lv_theme_apply_cb_t apply_cb;
-    struct _lv_theme_t * parent;    /**< Apply the current theme's style on top of this theme.*/
+    lv_theme_components_t * components;
+    uint32_t components_cnt;
     void * user_data;
     struct _lv_disp_t * disp;
     lv_color_t color_primary;
@@ -40,6 +57,7 @@ typedef struct _lv_theme_t {
     const lv_font_t * font_large;
     uint32_t flags;                 /*Any custom flag used by the theme*/
 } lv_theme_t;
+
 
 /**********************
  *  GLOBAL PROTOTYPES
@@ -52,13 +70,9 @@ typedef struct _lv_theme_t {
  */
 lv_theme_t  * lv_theme_get_from_obj(lv_obj_t * obj);
 
-/**
- * Set an apply callback for a theme.
- * The apply callback is used to add styles to different objects
- * @param theme pointer to theme which callback should be set
- * @param apply_cb pointer to the callback
- */
-void lv_theme_set_apply_cb(lv_theme_t * theme, lv_theme_apply_cb_t apply_cb);
+
+void lv_theme_add_style(lv_theme_t * theme, uint32_t component_id, const lv_style_t * style,
+                        lv_style_selector_t selector);
 
 /**
  * Get the small font of the theme
