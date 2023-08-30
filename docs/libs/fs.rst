@@ -11,6 +11,7 @@ LVG has built in support for:
 - STDIO (Linux and Windows using C standard function .e.g fopen, fread)
 - POSIX (Linux and Windows using POSIX function .e.g open, read)
 - WIN32 (Windows using Win32 API function .e.g CreateFileA, ReadFile)
+- MEMFS (handle memory buffer as a file)
 
 You still need to provide the drivers and libraries, this extension
 provides only the bridge between FATFS, STDIO, POSIX, WIN32 and LVGL.
